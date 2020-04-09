@@ -1,8 +1,12 @@
 //Libraries
 const Discord = require('discord.js');
 const ms = require('ms');
-const cheerio = require('cheerio')
+
+const cheerio = require('cheerio') // Image libraries
 const request = require('request')
+
+const ytdl = require('ytdl-core') //Music libraries
+
 
 const bot = new Discord.Client();
 //Auth Token
@@ -10,13 +14,76 @@ const token = '';
 
 const PREFIX = '!';
 var version = "0.1.0";
+
+//Music
+const servers = {};
+
+//
 bot.on('ready', () => {
-    console.log('This is online');
+    console.log('Bot is running on version: '+ version);
 })
 
+bot.on('debug', console.log)
 bot.on('message', message =>{
     let args = message.content.substring(PREFIX.length).split(" ");
     switch(args[0]){
+
+        case 'playmusic':
+            function play(connection, message){
+            var server = servers[message.guild.id];
+
+                server.dispatcher = connection.play(ytdl(server.queue[0], {filter: "audioonly"}));
+
+                server.queue.shift();
+
+                server.dispatcher.on("end", function() {
+                    if(server.queue[0]) play(connection, message);
+                    else connection.disconnect();
+                });
+            }
+        
+        
+            if(!args[1]){
+                message.channel.send("You need to provide a youtube link");
+                return;
+            }
+            
+            if(!message.member.voice.channel){
+                message.channel.send("You must be in a voice channel!");
+                return;
+            }
+
+            if(!servers[message.guild.id]) servers[message.guild.id] = {
+                queue: []
+            }
+
+            var server = servers[message.guild.id]
+            server.queue.push(args[1]);
+
+            if(!message.guild.voiceConnection) message.member.voice.channel.join().then(function(connection){
+                play(connection,message);
+            })
+        break
+
+        case 'skipmusic':
+            var server = servers[message.guild.id]
+            if(server.dispatcher) server.dispatcher.end();
+                server.dispatcher.end();
+        break
+
+        case 'stopmusic':
+            var server = servers[message.guild.id]
+            if(message.guild.voiceConnection){
+                for(var i = server.queue.length - 1; i >= 0; i--){
+                    server.queue.splice(i, 1);
+                }
+                server.dispatcher.end();
+                message.channel.send("Music Stopped!")
+                console.log('Music Stopped!')
+            }
+            if(message.guild.connection) message.guild.voiceConnection.disconnect();
+        break
+
 
         case 'clientinfo':
             const clientEmbed = new Discord.MessageEmbed()
@@ -46,6 +113,7 @@ bot.on('message', message =>{
         case 'image':
             imageFetch(message, args[1])
         break
+
         case 'projectinfo':
             const projectEmbed = new Discord.MessageEmbed()
             .setTitle('Project Information')
