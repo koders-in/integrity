@@ -2,6 +2,9 @@
 const Discord = require('discord.js');
 const ms = require('ms');
 
+//Config file
+const config = require("./config.json");
+
 const cheerio = require('cheerio') // Image libraries
 const request = require('request')
 
@@ -10,24 +13,31 @@ const ytdl = require('ytdl-core') //Music libraries
 
 const bot = new Discord.Client();
 //Auth Token
-const token = '';
+const token = (config.token);
 
 const PREFIX = '!';
-var version = "0.1.0";
+var version = "0.1.1";
 
 //Music
 const servers = {};
 
-//
+//Set bot as online with status
 bot.on('ready', () => {
     console.log('Bot is running on version: '+ version);
-})
+    bot.user.setStatus('available')
+    bot.user.setActivity({
+        game: {
+            name: 'Koders',
+            type: "watching",
+            url: "https://www.twitch.tv/monstercat"
+        }
+    });
+});
 
-bot.on('debug', console.log)
+
 bot.on('message', message =>{
     let args = message.content.substring(PREFIX.length).split(" ");
     switch(args[0]){
-
         case 'playmusic':
             function play(connection, message){
             var server = servers[message.guild.id];
@@ -41,7 +51,6 @@ bot.on('message', message =>{
                     else connection.disconnect();
                 });
             }
-        
         
             if(!args[1]){
                 message.channel.send("You need to provide a youtube link");
@@ -92,9 +101,29 @@ bot.on('message', message =>{
             .addField('Phone:', "XXXXXXXXX")
             .addField('Email:', "someemail@gmail.com")
             message.channel.send(clientEmbed)
-        break;
+        break
 
-        // case 'changerole':
+
+        case "poll":
+            const pollEmbed = new Discord.MessageEmbed()
+            .setColor(0xFFC300)
+            .setTitle("Initiate Poll")
+            .setDescription("To do yes or no poll")
+
+            if(!args[1]){
+                message.channel.send(pollEmbed);
+                break
+            }
+
+            let messageArgs = args.slice(1).join(" ");
+                message.channel.send( "**" + messageArgs + "**").then( async messageReaction => {
+                messageReaction.react("✔️");
+                messageReaction.react("❌");
+            });
+            break
+
+
+            // case 'changerole':
         //     let person = message.guild.member(message.mentions.users.first() || message.guild.members.fetch(args[2]))
         //     if(!person) return message.reply("No user with such name");
 
@@ -122,23 +151,23 @@ bot.on('message', message =>{
             .addField('Start Date:', "DD/MM/YY")
             .addField('End Date:', "DD/MM/YY")
             message.channel.send(projectEmbed)
-        break;
+        break
 
         case 'ping':
             message.channel.send("pong!")
-        break;
+        break
 
         case 'website':
             message.channel.send('koders.in')
-        break;
+        break
 
         case 'payment':
             message.channel.send("Paytm 7017799756")
-        break;
+        break
 
         case 'version':
             message.channel.send("Version: " + version);
-        break;
+        break
 
         case 'clear':
             if(!args[1]){
@@ -147,9 +176,6 @@ bot.on('message', message =>{
             message.channel.bulkDelete(args[1]);
             break;
         }
-    if(message.content === "TESTING"){
-        message.reply("TESTED OK");
-    }
 })
 
 function imageFetch(message, object){
