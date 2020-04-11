@@ -23,7 +23,7 @@
 ## Table of content
 
 - [Details](#project-details)
-- [Changelog] (#changelog)
+- [Changelog](#changelog)
 - [Code of conduct](#code-of-conduct)
 - [Usage](#usage)
 - [Commands](#commands)
@@ -38,6 +38,7 @@
 
 
 ## Changelog 
+All the changes will be addressed in [CHANGELOG.md](https://github.com/koders-in/integrity/blob/master/CHANGELOG.md) file
 
 ## Code of conduct
 - **Pitch in!**, and offer what help you can, as there is never enough time to do everything. If you noticed that something is lacking in the documentation, you're probably right, so do generate as much issues as possible.
@@ -59,6 +60,9 @@ Use prefix `!` before using any commands.
 - ```paymentmethod```: Display payment methods
 -  ```image _image_name_```: Fetches any random image on imagename
 - ```poll _subject_```: Put a poll on the subject among channel
+- ```playmusic _url_```: Plays music in voice channel
+- ```skipmusic ```: Skips music 
+- ```stopmusic```: Stops and bot leaves from voice channel
 
 ### Issues
 
@@ -68,6 +72,6 @@ Have a bug or a feature request? Please first read the code of conduct and searc
 
 ## Copyright and license
 
-Code and documentation copyright 2017-2020 the [koders] (https://www.koders.in). Code released under the [MIT License](https://github.com/twbs/bootstrap/blob/master/LICENSE).
+Code and documentation copyright 2017-2020 by the [koders](https://www.koders.in). Code released under the [MIT License](https://en.wikipedia.org/wiki/MIT_License).
 
 <h3 align="center"> Made with ♡ by <a href="http://koders.in"> Koders </a></h3>
