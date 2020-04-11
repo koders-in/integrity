@@ -2,14 +2,16 @@
 const Discord = require('discord.js');
 const ms = require('ms');
 
+const superagent = require('superagent')
 //Config file
 const config = require("./config.json");
 
+//Todo files
+const fs = require('fs')
 const cheerio = require('cheerio') // Image libraries
 const request = require('request')
 
 const ytdl = require('ytdl-core') //Music libraries
-
 
 const bot = new Discord.Client();
 //Auth Token
@@ -21,21 +23,20 @@ var version = "0.1.1";
 //Music
 const servers = {};
 
+//For cooldown
+const cooldownMembers = new Set();
+
 //Set bot as online with status
 bot.on('ready', () => {
     console.log('Bot is running on version: '+ version);
     bot.user.setStatus('available')
-    bot.user.setActivity({
-        game: {
-            name: 'Koders',
-            type: "watching",
-            url: "https://www.twitch.tv/monstercat"
-        }
-    });
+    bot.user.setActivity('Koders', {
+             type: "watching",
+         }).catch(console.error);
 });
 
 
-bot.on('message', message =>{
+bot.on('message', async message =>{
     let args = message.content.substring(PREFIX.length).split(" ");
     switch(args[0]){
         case 'playmusic':
@@ -94,13 +95,8 @@ bot.on('message', message =>{
         break
 
 
-        case 'clientinfo':
-            const clientEmbed = new Discord.MessageEmbed()
-            .setTitle('Client Information')
-            .addField('Client Name', message.author.username)
-            .addField('Phone:', "XXXXXXXXX")
-            .addField('Email:', "someemail@gmail.com")
-            message.channel.send(clientEmbed)
+        case 'meme':
+            memeFetch(message)
         break
 
 
@@ -139,6 +135,34 @@ bot.on('message', message =>{
 
         // break
 
+
+        case 'addtodo':
+            let data = args[0];
+            fs.appendFile('todo.txt', data, (err) =>{
+                if(err) throw err;
+            })
+
+            message.channel.send("To do has been saved!");
+        break
+
+        //Have to fix
+        case 'cooldown':
+            if(!args[1]) return message.reply("Mention someone!")
+            let person = message.guild.member(message.mentions.users.first() || message.guild.members.fetch(args[1]))
+            if(!person) return message.reply("Can't find!")
+
+            if(cooldownMembers.has(person.id)){
+                message.reply("You can't text yet! Wait for 30 seconds!");
+            }
+            else{
+                message.reply("Setting cooldown");
+                person.
+                setTimeout(() => {
+                    cooldownMembers.delete(person.id);
+                })
+            }
+        break
+
         case 'image':
             imageFetch(message, args[1])
         break
@@ -171,12 +195,44 @@ bot.on('message', message =>{
 
         case 'clear':
             if(!args[1]){
-                message.reply("Please define second argument")
+                message.reply("Let me know how many chats you want to be deleted!")
             }
             message.channel.bulkDelete(args[1]);
             break;
         }
 })
+
+function memeFetch(message){
+    var options = {
+        url: "https://apis.duncte123.me/meme",
+        method: "GET", 
+        headers: {
+            "Accept": "text/html",
+            "User-Agent": "Chrome"
+            }
+        };
+
+        request(options, function(error, response, responseBody) {
+            if (error) {
+                return;
+            }
+            $ = cheerio.load(responseBody);
+            console.log(responseBody)
+            body = JSON.parse(responseBody)
+            var image = body.data(url)
+            console.log(image)
+            // var links = ("url");
+            // console.log(links)
+            // var urls = new Array(links.length).fill(0).map((v, i) => links.eq(i).attr("url"));
+            // console.log(urls);
+            // if (!urls.length) {
+            //     return;
+            // }
+
+            //message.channel.send(responseBody.url);
+    });
+}
+
 
 function imageFetch(message, object){
     var options = {
