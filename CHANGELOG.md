@@ -6,6 +6,13 @@ and this project adheres to "Semantic Versioning"
  
 ## [Unreleased] - 2020/04/09
  
+## [0.1.2] - 2020-04-20
+### Added
+ - Meme command
+### Change
+ - Removed projectinfo and clientinfo till database connection testing
+### Fixed
+
 ## [0.1.1] - 2020-04-11
 ### Added
  - Music functions added (Pause, play and skip)
