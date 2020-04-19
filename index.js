@@ -1,24 +1,25 @@
 //Libraries
 const Discord = require('discord.js');
 const ms = require('ms');
+const JSON = require('JSON')
 
-const superagent = require('superagent')
 //Config file
 const config = require("./config.json");
+
+
+//Meme functions
+const superagent = require('superagent')
 
 //Todo files
 const fs = require('fs')
 const cheerio = require('cheerio') // Image libraries
 const request = require('request')
-
 const ytdl = require('ytdl-core') //Music libraries
 
-const bot = new Discord.Client();
-//Auth Token
+//Token prefix and version
 const token = (config.token);
-
-const PREFIX = '!';
-var version = "0.1.1";
+const PREFIX = (config.prefix);
+const version = (config.version);
 
 //Music
 const servers = {};
@@ -26,27 +27,35 @@ const servers = {};
 //For cooldown
 const cooldownMembers = new Set();
 
+
+//Initialization 
+const bot = new Discord.Client();
+
 //Set bot as online with status
-bot.on('ready', () => {
+bot.on('ready', async () => {
     console.log('Bot is running on version: '+ version);
     bot.user.setStatus('available')
-    bot.user.setActivity('Koders', {
+    await bot.user.setActivity('Koders', {
              type: "watching",
-         }).catch(console.error);
+         }).catch(error => {
+             console.log(error.stack);
+         })
 });
 
 
 bot.on('message', async message =>{
     let args = message.content.substring(PREFIX.length).split(" ");
-    switch(args[0]){
+    switch(args[0].toLowerCase()){
+        case 'exportchat':
+            if(message.channel.type == "text") {
+            console.log(message.channel.messages.fetch);
+            }
+        break;
         case 'playmusic':
             function play(connection, message){
             var server = servers[message.guild.id];
-
                 server.dispatcher = connection.play(ytdl(server.queue[0], {filter: "audioonly"}));
-
                 server.queue.shift();
-
                 server.dispatcher.on("end", function() {
                     if(server.queue[0]) play(connection, message);
                     else connection.disconnect();
@@ -94,12 +103,6 @@ bot.on('message', async message =>{
             if(message.guild.connection) message.guild.voiceConnection.disconnect();
         break
 
-
-        case 'meme':
-            memeFetch(message)
-        break
-
-
         case "poll":
             const pollEmbed = new Discord.MessageEmbed()
             .setColor(0xFFC300)
@@ -136,6 +139,25 @@ bot.on('message', async message =>{
         // break
 
 
+        case 'meme':
+            var options = {
+                url: "http://apis.duncte123.me/meme",
+                method: "GET", 
+                headers: {
+                    "Accept": "text/html",
+                    "User-Agent": "Chrome"
+                    }
+                };
+        
+                request(options, function(error, response, responseBody) {
+                    if (error) {
+                        return;
+                    }
+                    $ = cheerio.load(responseBody);
+                    const obj = JSON.parse(responseBody)
+                    message.channel.send(obj.data.image);
+            });
+        break
         case 'addtodo':
             let data = args[0];
             fs.appendFile('todo.txt', data, (err) =>{
@@ -181,6 +203,10 @@ bot.on('message', async message =>{
             message.channel.send("pong!")
         break
 
+        case 'hey':
+            message.channel.send("Hi!")
+        break
+
         case 'website':
             message.channel.send('koders.in')
         break
@@ -201,38 +227,6 @@ bot.on('message', async message =>{
             break;
         }
 })
-
-function memeFetch(message){
-    var options = {
-        url: "https://apis.duncte123.me/meme",
-        method: "GET", 
-        headers: {
-            "Accept": "text/html",
-            "User-Agent": "Chrome"
-            }
-        };
-
-        request(options, function(error, response, responseBody) {
-            if (error) {
-                return;
-            }
-            $ = cheerio.load(responseBody);
-            console.log(responseBody)
-            body = JSON.parse(responseBody)
-            var image = body.data(url)
-            console.log(image)
-            // var links = ("url");
-            // console.log(links)
-            // var urls = new Array(links.length).fill(0).map((v, i) => links.eq(i).attr("url"));
-            // console.log(urls);
-            // if (!urls.length) {
-            //     return;
-            // }
-
-            //message.channel.send(responseBody.url);
-    });
-}
-
 
 function imageFetch(message, object){
     var options = {
