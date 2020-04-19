@@ -50,15 +50,13 @@ All the changes will be addressed in [CHANGELOG.md](https://github.com/koders-in
 - If you are a collaborator of this repository, please don't merge pull requests without confirmation from the owner.
 
 ## Usage
-Use prefix `!` before using any commands.
+Use prefix `&` before using any commands.
 
 ### Commands
 - ```version``` : Shows current version
 - ```ping```: Checks online status
-- ```projectinfo _project_number_```: Displays project information
-- ```clientinfo _@discord_id_```: Displays client information
-- ```paymentmethod```: Display payment methods
 -  ```image _image_name_```: Fetches any random image on imagename
+-  ```meme```: Fetches any random meme
 - ```poll _subject_```: Put a poll on the subject among channel
 - ```playmusic _url_```: Plays music in voice channel
 - ```skipmusic ```: Skips music 
