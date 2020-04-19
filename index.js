@@ -46,11 +46,11 @@ bot.on('ready', async () => {
 bot.on('message', async message =>{
     let args = message.content.substring(PREFIX.length).split(" ");
     switch(args[0].toLowerCase()){
-        case 'exportchat':
-            if(message.channel.type == "text") {
-            console.log(message.channel.messages.fetch);
-            }
-        break;
+        // case 'exportchat':
+        //     if(message.channel.type == "text") {
+        //     console.log(message.channel.messages.fetch);
+        //     }
+        // break;
         case 'playmusic':
             function play(connection, message){
             var server = servers[message.guild.id];
@@ -158,46 +158,46 @@ bot.on('message', async message =>{
                     message.channel.send(obj.data.image);
             });
         break
-        case 'addtodo':
-            let data = args[0];
-            fs.appendFile('todo.txt', data, (err) =>{
-                if(err) throw err;
-            })
+        // case 'addtodo':
+        //     let data = args[0];
+        //     fs.appendFile('todo.txt', data, (err) =>{
+        //         if(err) throw err;
+        //     })
 
-            message.channel.send("To do has been saved!");
-        break
+        //     message.channel.send("To do has been saved!");
+        // break
 
-        //Have to fix
-        case 'cooldown':
-            if(!args[1]) return message.reply("Mention someone!")
-            let person = message.guild.member(message.mentions.users.first() || message.guild.members.fetch(args[1]))
-            if(!person) return message.reply("Can't find!")
+        // //Have to fix
+        // case 'cooldown':
+        //     if(!args[1]) return message.reply("Mention someone!")
+        //     let person = message.guild.member(message.mentions.users.first() || message.guild.members.fetch(args[1]))
+        //     if(!person) return message.reply("Can't find!")
 
-            if(cooldownMembers.has(person.id)){
-                message.reply("You can't text yet! Wait for 30 seconds!");
-            }
-            else{
-                message.reply("Setting cooldown");
-                person.
-                setTimeout(() => {
-                    cooldownMembers.delete(person.id);
-                })
-            }
-        break
+        //     if(cooldownMembers.has(person.id)){
+        //         message.reply("You can't text yet! Wait for 30 seconds!");
+        //     }
+        //     else{
+        //         message.reply("Setting cooldown");
+        //         person.
+        //         setTimeout(() => {
+        //             cooldownMembers.delete(person.id);
+        //         })
+        //     }
+        // break
 
         case 'image':
             imageFetch(message, args[1])
         break
 
-        case 'projectinfo':
-            const projectEmbed = new Discord.MessageEmbed()
-            .setTitle('Project Information')
-            .addField('Project Name', "Some project name")
-            .addField('Description:', "Some description")
-            .addField('Start Date:', "DD/MM/YY")
-            .addField('End Date:', "DD/MM/YY")
-            message.channel.send(projectEmbed)
-        break
+        // case 'projectinfo':
+        //     const projectEmbed = new Discord.MessageEmbed()
+        //     .setTitle('Project Information')
+        //     .addField('Project Name', "Some project name")
+        //     .addField('Description:', "Some description")
+        //     .addField('Start Date:', "DD/MM/YY")
+        //     .addField('End Date:', "DD/MM/YY")
+        //     message.channel.send(projectEmbed)
+        // break
 
         case 'ping':
             message.channel.send("pong!")
@@ -207,13 +207,13 @@ bot.on('message', async message =>{
             message.channel.send("Hi!")
         break
 
-        case 'website':
-            message.channel.send('koders.in')
-        break
+        // case 'website':
+        //     message.channel.send('koders.in')
+        // break
 
-        case 'payment':
-            message.channel.send("Paytm 7017799756")
-        break
+        // case 'payment':
+        //     message.channel.send("Paytm 7017799756")
+        // break
 
         case 'version':
             message.channel.send("Version: " + version);
