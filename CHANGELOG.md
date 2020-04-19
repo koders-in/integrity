@@ -10,7 +10,8 @@ and this project adheres to "Semantic Versioning"
 ### Added
  - Meme command
 ### Change
- - Removed projectinfo and clientinfo till database connection testing
+ - Prefix changed from ```!``` to ```&```
+ - Removed projectinfo and clientinfo for database connection testing
 ### Fixed
 
 ## [0.1.1] - 2020-04-11
