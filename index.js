@@ -185,6 +185,24 @@ bot.on('message', async message =>{
         //     }
         // break
 
+        case 'remind':
+            if(!args[1]) return message.reply("Try correct syntax")
+            if(!args[2]) return message.reply("Give me a message to remind about!")
+            message.delete()
+            var d = new Date();
+            const updateEmbed = new Discord.MessageEmbed()
+            .setColor(0x0794f2)
+            .setTitle("Reminder!")
+            .setDescription(args.slice(2).join(" "))
+            .setFooter("Reminded by: " + message.member.user.tag + "\nTimestamp: " + d.toLocaleString())
+
+            setTimeout(() =>
+            {
+                message.channel.send(updateEmbed)
+            }, args[1]*1000*60*60
+            )
+        break
+
         case 'image':
             imageFetch(message, args[1])
         break
