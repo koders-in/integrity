@@ -5,6 +5,14 @@ The format is based on "Keep a Changelog"
 and this project adheres to "Semantic Versioning"
  
 ## [Unreleased] - 2020/04/09
+
+ 
+## [0.1.3] - 2020-04-23
+### Added
+ - Remind command
+### Change
+ - 
+### Fixed
  
 ## [0.1.2] - 2020-04-20
 ### Added
