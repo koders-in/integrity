@@ -237,11 +237,11 @@ bot.on('message', async message =>{
             message.channel.send("Version: " + version);
         break
 		
-		case 'clientinfo':
-			if(!args[1]) return message.reply("tag someone")
+	case 'clientinfo':
+		if(!args[1]) return message.reply("tag someone")
 				
-			  if(message.content.includes(args[1]))
-			  {
+	        if(message.content.includes(args[1]))
+			 {
 				  let user = message.mentions.users.first();
 				 var id=user.username; 
 				 //console.log(id)
@@ -249,7 +249,7 @@ bot.on('message', async message =>{
 		  
               
 			 //const id=args.slice(1).join(" ")
-			 var options = {
+		var options = {
 				 
                 url: "https://sheltered-plateau-96720.herokuapp.com/client?discordID="+id,
                 method: "GET", 
@@ -284,9 +284,9 @@ bot.on('message', async message =>{
 					
                     
             });
-			break
+	break
 			
-		case 'teaminfo':
+	case 'teaminfo':
 			if(!args[1]) return message.reply("tag someone")
 				
 			  if(message.content.includes(args[1]))
@@ -298,7 +298,7 @@ bot.on('message', async message =>{
 		  
               
 			 //const id=args.slice(1).join(" ")
-			 var options = {
+		var options = {
 				 
                 url: "https://sheltered-plateau-96720.herokuapp.com/team?discordID="+id,
                 method: "GET", 
@@ -333,7 +333,7 @@ bot.on('message', async message =>{
 					
                     
             });
-			break
+	break
 			
 			
 
