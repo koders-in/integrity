@@ -221,7 +221,7 @@ bot.on('message', async message =>{
             message.channel.send("pong!")
         break
 
-        case 'hey':
+        case 'Hey':
             message.channel.send("Hi!")
         break
 
@@ -236,10 +236,110 @@ bot.on('message', async message =>{
         case 'version':
             message.channel.send("Version: " + version);
         break
+		
+		case 'clientinfo':
+			if(!args[1]) return message.reply("tag someone")
+				
+			  if(message.content.includes(args[1]))
+			  {
+				  let user = message.mentions.users.first();
+				 var id=user.username; 
+				 //console.log(id)
+			  }
+		  
+              
+			 //const id=args.slice(1).join(" ")
+			 var options = {
+				 
+                url: "https://sheltered-plateau-96720.herokuapp.com/client?discordID="+id,
+                method: "GET", 
+                headers: {
+                    "Accept": "text/html",
+                    "User-Agent": "Chrome"
+                    }
+                };
+        
+                request(options, function(error, response, responseBody) {
+                    if (error) {
+                        return;
+                    }
+                    try{
+                    const obj = JSON.parse(responseBody)
+					if(responseBody.length<3)
+					{
+						return message.reply("no such user")
+					}
+					const res=obj[0]
+					
+					const clientEmbed = new Discord.MessageEmbed()
+					.setColor(0xFFC300)
+					.setTitle(res.clientName)
+					.setDescription("Email: "+(res.email[0].e_primary)+"\nContact: "+(res.contact[0].c_primary))
+					
+					message.channel.send(clientEmbed)
+					id=""
+					}
+					catch(err){console.err(err)}
+					
+					
+                    
+            });
+			break
+			
+		case 'teaminfo':
+			if(!args[1]) return message.reply("tag someone")
+				
+			  if(message.content.includes(args[1]))
+			  {
+				  let user = message.mentions.users.first();
+				 var id=user.username; 
+				 //console.log(id)
+			  }
+		  
+              
+			 //const id=args.slice(1).join(" ")
+			 var options = {
+				 
+                url: "https://sheltered-plateau-96720.herokuapp.com/team?discordID="+id,
+                method: "GET", 
+                headers: {
+                    "Accept": "text/html",
+                    "User-Agent": "Chrome"
+                    }
+                };
+        
+                request(options, function(error, response, responseBody) {
+                    if (error) {
+                        return;
+                    }
+                    try{
+                    const obj = JSON.parse(responseBody)
+					if(responseBody.length<3)
+					{
+						return message.reply("no such user")
+					}
+					const res=obj[0]
+					
+					const clientEmbed = new Discord.MessageEmbed()
+					.setColor(0xFFC300)
+					.setTitle(res.memberName)
+					.setDescription("Email: "+(res.email[0].e_primary)+"\nContact: "+(res.contact[0].c_primary))
+					
+					message.channel.send(clientEmbed)
+					id=""
+					}
+					catch(err){console.err(err)}
+					
+					
+                    
+            });
+			break
+			
+			
 
         case 'clear':
             if(!args[1]){
-                message.reply("Let me know how many chats you want to be deleted!")
+                message.reply("Let me know how many messages you want me to delete!")
             }
             message.channel.bulkDelete(args[1]);
             break;
