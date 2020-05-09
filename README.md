@@ -61,6 +61,8 @@ Use prefix `&` before using any commands.
 - ```playmusic _url_```: Plays music in voice channel
 - ```skipmusic ```: Skips music 
 - ```stopmusic```: Stops and bot leaves from voice channel
+- ```teaminfo```:Team members details
+- ```clientinfo```:Clients details
 
 ### Issues
 
