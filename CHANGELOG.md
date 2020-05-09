@@ -6,7 +6,13 @@ and this project adheres to "Semantic Versioning"
  
 ## [Unreleased] - 2020/04/09
 
- 
+## [0.1.4] - 2020-05-09
+### Added
+ - Team and Client info added
+### Change
+ - 
+### Fixed
+
 ## [0.1.3] - 2020-04-23
 ### Added
  - Remind command
